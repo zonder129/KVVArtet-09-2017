@@ -93,24 +93,6 @@ public class AuthorizationTest {
     }
 
     @Test
-    public void signUpWithUsernameThatNotValidTest() throws Exception {
-        mockMvc
-                .perform(post("/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(new User("test@username", "testemail@mail.ru", "testpassword"))))
-                .andExpect(status().is(400)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.SIGNUP_VALIDATION_FAILED.getResponse()));
-    }
-
-    @Test
-    public void signUpWithEmailhatNotValidTest() throws Exception {
-        mockMvc
-                .perform(post("/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(new User("testusername", "testemailmail.ru", "testpassword"))))
-                .andExpect(status().is(400)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.SIGNUP_VALIDATION_FAILED.getResponse()));
-    }
-
-    @Test
     public void signInTest() throws Exception {
         signIn(null);
     }

@@ -40,10 +40,6 @@ public class AuthorizationController {
 
         final Integer six = 6;
 
-        if (username.contains("@") || !email.contains("@")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.SIGNUP_VALIDATION_FAILED.getResponse());
-        }
-
         if (userService.isUsernameExists(username)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.USERNAME_EXIST.getResponse());
         } else if (userService.isEmailExists(email)) {
