@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import project.gamemechanics.scoreboard.ScoreboardService;
 import project.server.models.ApiResponse;
 import project.server.models.User;
 import project.server.services.UserService;
@@ -17,15 +18,17 @@ import java.util.Objects;
 public class AuthorizationController {
     private final UserService userService;
     private final PasswordEncoder encoder;
+    private final ScoreboardService scoreboardService;
     @SuppressWarnings("WeakerAccess")
     static final String FRONTED_URL1 = "https://lands-dangeous.herokuapp.com";
     static final String FRONTED_URL2 = "https://dev-lands-dungeons.herokuapp.com";
 
 
-    public AuthorizationController(UserService userService, PasswordEncoder encoder) {
+    public AuthorizationController(UserService userService, PasswordEncoder encoder, ScoreboardService scoreboardService) {
         super();
         this.userService = userService;
         this.encoder = encoder;
+        this.scoreboardService = scoreboardService;
     }
 
 
@@ -50,7 +53,8 @@ public class AuthorizationController {
         } else if (userService.isEmailExists(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.EMAIL_EXIST.getResponse());
         } else {
-            userService.setUser(user);
+            user = userService.setUser(user);
+            scoreboardService.setDefaultRecord(user.getId());
             return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.SIGNUP_SUCCESS.getResponse());
         }
     }

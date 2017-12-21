@@ -1,6 +1,7 @@
 package project.websocket.handlers;
 
 import org.springframework.stereotype.Component;
+import project.gamemechanics.battlefield.aliveentitiescontainers.CharactersParty;
 import project.gamemechanics.world.World;
 import project.states.LobbyState;
 import project.websocket.messages.LobbyRequestMessage;
@@ -30,6 +31,7 @@ public class LobbyRequestHandler extends MessageHandler<LobbyRequestMessage> {
     @Override
     public Message handle(@NotNull LobbyRequestMessage message, Integer forUser) {
         //TODO some world class method
-        return message;
+
+        return world.getLobby().enqueue(new CharactersParty(world.getPendingLootPool()), message.getGameMode());
     }
 }

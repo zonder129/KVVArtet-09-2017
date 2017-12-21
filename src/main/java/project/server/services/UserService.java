@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.dao.UserDao;
 import project.server.mappers.UserMapper;
@@ -70,7 +71,7 @@ public class UserService implements UserDao {
         return getUserIdByUsername(usernameOrEmail);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public User setUser(User newUser) {
         final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
