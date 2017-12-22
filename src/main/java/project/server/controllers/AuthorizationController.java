@@ -14,13 +14,11 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 @RestController
-@CrossOrigin(origins = AuthorizationController.FRONTED_URL)
 public class AuthorizationController {
     private final UserService userService;
     private final PasswordEncoder encoder;
     private final ScoreboardService scoreboardService;
     @SuppressWarnings("WeakerAccess")
-    static final String FRONTED_URL = "https://landsanddungeons.ru.com/";
 
 
     public AuthorizationController(UserService userService, PasswordEncoder encoder, ScoreboardService scoreboardService) {
