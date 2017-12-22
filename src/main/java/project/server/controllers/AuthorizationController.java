@@ -18,9 +18,8 @@ public class AuthorizationController {
     private final UserService userService;
     private final PasswordEncoder encoder;
     private final ScoreboardService scoreboardService;
+
     @SuppressWarnings("WeakerAccess")
-
-
     public AuthorizationController(UserService userService, PasswordEncoder encoder, ScoreboardService scoreboardService) {
         super();
         this.userService = userService;
