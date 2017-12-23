@@ -43,7 +43,7 @@ public class AuthorizationTest {
     @Test
     public void signUpTest() throws Exception {
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", "testemail@mail.ru", "testpassword"))))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers.content().string(ApiResponse.SIGNUP_SUCCESS.getResponse()));
@@ -53,7 +53,7 @@ public class AuthorizationTest {
     @Test
     public void signUpWithoutUsernameTest() throws Exception {
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User(null, "testemail@mail.ru", "testpassword"))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.FIELD_EMPTY.getResponse()));
@@ -63,7 +63,7 @@ public class AuthorizationTest {
     @Test
     public void signUpWithoutEmailTest() throws Exception {
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", null, "testpassword"))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.FIELD_EMPTY.getResponse()));
@@ -73,7 +73,7 @@ public class AuthorizationTest {
     @Test
     public void signUpWithoutPasswordTest() throws Exception {
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", "testemail@mail.ru", null))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.FIELD_EMPTY.getResponse()));
@@ -83,7 +83,7 @@ public class AuthorizationTest {
     public void signUpWithUsernameThatExistTest() throws Exception {
         dao.setUser(new User("reallytestusername", "reallytestemail@mail.ru", "reallytestpassword"));
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("reallytestusername", "testemail@mail.ru", "testpassword"))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.USERNAME_EXIST.getResponse()));
@@ -93,7 +93,7 @@ public class AuthorizationTest {
     public void signUpWithEmailThatExistTest() throws Exception {
         dao.setUser(new User("reallytestusername", "reallytestemail@mail.ru", "reallytestpassword"));
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", "reallytestemail@mail.ru", "testpassword"))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.EMAIL_EXIST.getResponse()));
@@ -102,7 +102,7 @@ public class AuthorizationTest {
     @Test
     public void signUpWithUsernameThatNotValidTest() throws Exception {
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("test@username", "testemail@mail.ru", "testpassword"))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.SIGNUP_VALIDATION_FAILED.getResponse()));
@@ -111,7 +111,7 @@ public class AuthorizationTest {
     @Test
     public void signUpWithEmailhatNotValidTest() throws Exception {
         mockMvc
-                .perform(post("/signup")
+                .perform(post("/restapi/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", "testemailmail.ru", "testpassword"))))
                 .andExpect(status().is(FAILURE_STATUS)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.SIGNUP_VALIDATION_FAILED.getResponse()));
@@ -125,7 +125,7 @@ public class AuthorizationTest {
 
     private void signIn(MockHttpSession session) throws Exception {
         signUpTest();
-        final MockHttpServletRequestBuilder post = post("/signin");
+        final MockHttpServletRequestBuilder post = post("/restapi/signin");
         if (session != null) {
             post.session(session);
         }
@@ -139,7 +139,7 @@ public class AuthorizationTest {
     @Test
     public void signInWithOnlyEmailTest() throws Exception {
         signUpTest();
-        final MockHttpServletRequestBuilder post = post("/signin");
+        final MockHttpServletRequestBuilder post = post("/restapi/signin");
         mockMvc.perform(post
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(new User(null, "testemail@mail.ru", "testpassword"))))
@@ -149,7 +149,7 @@ public class AuthorizationTest {
     @Test
     public void signInWithNotExistUserTest() throws Exception {
         signUpTest();
-        final MockHttpServletRequestBuilder post = post("/signin");
+        final MockHttpServletRequestBuilder post = post("/restapi/signin");
         mockMvc.perform(post
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(new User("randomTestusername", "randomTestemail@mail.ru", "newTestpassword"))))
@@ -160,7 +160,7 @@ public class AuthorizationTest {
     @Test
     public void signInWithOnlyUsernameTest() throws Exception {
         signUpTest();
-        final MockHttpServletRequestBuilder post = post("/signin");
+        final MockHttpServletRequestBuilder post = post("/restapi/signin");
         mockMvc.perform(post
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(new User("testusername", null, "testpassword"))))
@@ -170,7 +170,7 @@ public class AuthorizationTest {
     @Test
     public void signInWithWrongPasswordTest() throws Exception {
         signUpTest();
-        final MockHttpServletRequestBuilder post = post("/signin");
+        final MockHttpServletRequestBuilder post = post("/restapi/signin");
         mockMvc.perform(post
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(new User("testusername", "testemail@mail.ru", "mistakepassword"))))
@@ -182,7 +182,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(session);
         mockMvc
-                .perform(post("/session")
+                .perform(post("/restapi/session")
                         .session(session))
                 .andExpect(status().isOk());
     }
@@ -193,7 +193,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(null);
         mockMvc
-                .perform(post("/session")
+                .perform(post("/restapi/session")
                         .session(session))
                 .andExpect(status().is(STATUS_401)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.USER_NOT_AUTHORIZED.getResponse()));
     }
@@ -203,7 +203,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(session);
         mockMvc
-                .perform(delete("/signout")
+                .perform(delete("/restapi/signout")
                         .session(session))
                 .andExpect(status().isOk());
     }
@@ -214,7 +214,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(null);
         mockMvc
-                .perform(delete("/signout")
+                .perform(delete("/restapi/signout")
                         .session(session))
                 .andExpect(status().is(STATUS_401)).andExpect(MockMvcResultMatchers.content().string(ApiResponse.USER_NOT_AUTHORIZED.getResponse()));
     }
@@ -224,7 +224,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(session);
         mockMvc
-                .perform(put("/settings")
+                .perform(put("/restapi/settings")
                         .session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername1", "testemail@mail.ru", "testpassword"))))
@@ -237,7 +237,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(session);
         mockMvc
-                .perform(put("/settings")
+                .perform(put("/restapi/settings")
                         .session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("reallytestusername", "testemail@mail.ru", "testpassword"))))
@@ -249,7 +249,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(session);
         mockMvc
-                .perform(put("/settings")
+                .perform(put("/restapi/settings")
                         .session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", "testemail@mail.ru", "sometestpassword"))))
@@ -261,7 +261,7 @@ public class AuthorizationTest {
         final MockHttpSession session = new MockHttpSession();
         signIn(session);
         mockMvc
-                .perform(put("/settings")
+                .perform(put("/restapi/settings")
                         .session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(new User("testusername", "testemail@mail.ru", "testpassword"))))

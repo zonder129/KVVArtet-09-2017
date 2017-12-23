@@ -26,3 +26,31 @@ Dungeon crawler. Город с вендорами выступает в каче
 Документация на API в файле [swagger.yml](swagger.yml).
 
 Для просмотра скопируйте его в [онлайн-редактор Swagger](http://editor.swagger.io/#).
+
+## Howto run backend
+
+sudo apt-get install postgresql
+
+psql -U postgres
+
+//create password
+
+CREATE DATABASE landd
+
+CREATE USER landd WITH ENCRYPTED PASSWORD 'landd'
+
+GRANT ALL TO landd ON landd
+
+quit
+
+git clone https://github.com/zonder129/KVVArtet-09-2017/
+
+cd KVVArtet-09-2017/
+
+sudo apt-get install maven
+
+mvn compile
+
+mvn install
+
+java -jar /target/KVVArtet-1.0-SNAPSHOT.jar
