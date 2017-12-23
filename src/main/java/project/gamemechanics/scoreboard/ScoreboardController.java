@@ -19,7 +19,7 @@ public class ScoreboardController {
         this.scoreboardService = scoreboardService;
     }
 
-    @GetMapping(value = "/scoreboard", produces = "application/json")
+    @GetMapping(value = "restapi//scoreboard", produces = "application/json")
     @ResponseBody
     public List<ScoreboardRecord> getScoreboard() {
 

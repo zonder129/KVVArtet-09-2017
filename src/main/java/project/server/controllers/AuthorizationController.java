@@ -28,7 +28,7 @@ public class AuthorizationController {
     }
 
 
-    @PostMapping("/signup")
+    @PostMapping("/restapi/signup")
     public ResponseEntity<String> signUp(@RequestBody User user) {
         final String username = user.getUsername();
         final String email = user.getEmail();
@@ -55,7 +55,7 @@ public class AuthorizationController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/restapi/signin")
     public ResponseEntity<String> signIn(@RequestBody User user, HttpSession httpSession) {
 
         final Integer userIdInCurrentSession = (Integer) httpSession.getAttribute("id");
@@ -88,7 +88,7 @@ public class AuthorizationController {
         }
     }
 
-    @DeleteMapping("/signout")
+    @DeleteMapping("/restapi/signout")
     public ResponseEntity<String> signOut(HttpSession httpSession) {
         final Integer userIdInCurrentSession = (Integer) httpSession.getAttribute("id");
         if (userIdInCurrentSession == null) {
@@ -99,7 +99,7 @@ public class AuthorizationController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.SIGNOUT_SUCCESS.getResponse());
     }
 
-    @PostMapping("/session")
+    @PostMapping("/restapi/session")
     public ResponseEntity<String> requestUserInCurrentSession(HttpSession httpSession) {
         final Integer userIdInCurrentSession = (Integer) httpSession.getAttribute("id");
 
@@ -112,7 +112,7 @@ public class AuthorizationController {
                 + ' ' + userIdInCurrentSession + "  Your login is " + username);
     }
 
-    @PutMapping("/settings")
+    @PutMapping("/restapi/settings")
     public ResponseEntity<String> changeUserProfile(@RequestBody User user, HttpSession httpSession) {
         final Integer id = (Integer) httpSession.getAttribute("id");
 
